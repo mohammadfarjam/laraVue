@@ -1,0 +1,127 @@
+@font-face {
+    font-family: IRANSans;
+    font-style: normal;
+    src: url('../font/IRANSansWeb(FaNum).ttf') format('truetype');
+}
+.font{
+    font-family: IRANSans;
+}
+body {
+    min-height: 100vh;
+    width: 100%;
+    font-family: IRANSans;
+}
+section {
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+section.side {
+    background: url("../image/bk.png") no-repeat;
+    background-size: 100% 102%;
+}
+
+.side img {
+    width: 50%;
+    max-width: 50%;
+}
+
+.login-container {
+    max-width: 450px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.title {
+    font-size: 3em;
+    font-weight: bold;
+    text-align: center;
+    letter-spacing: 1px;
+    margin-bottom: 50px;
+}
+
+.login-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-control1 {
+    width: 100%;
+    position: relative;
+    margin-bottom: 24px;
+}
+
+input,
+button {
+    border: none;
+    outline: none;
+    border-radius: 30px;
+    font-size: 1.1em;
+    font-family: IRANSans;
+}
+
+input {
+    width: 100%;
+    background: #e6e6e6!important;
+    color: #333;
+    letter-spacing: .5px;
+    padding: 14px 64px;
+    direction: rtl;
+}
+
+input~i {
+    position: absolute;
+    top: 25px;
+    right: 32px;
+    transform: translateY(-50%);
+    color: #888;
+    transition: color 0.4s;
+}
+
+input:focus~i {
+    color: #843bc7;
+}
+
+button.submit {
+    color: #fff;
+    padding: 14px 64px;
+    margin: 0 auto;
+    letter-spacing: .5px;
+    font-weight: bold;
+    background-image: linear-gradient(to right, #8b33c5, #15a0e1);
+    cursor: pointer;
+    transition: opacity 0.4s;
+}
+
+button.submit:hover {
+    opacity: 0.8;
+}
+
+.custom_btn {
+    color: #fff;
+   padding:10px 20px!important;
+    letter-spacing: 0.5px;
+    font-weight: bold;
+    background-image: linear-gradient(to right, #8b33c5, #15a0e1);
+    cursor: pointer;
+    transition: opacity 0.4s;
+    border-radius: 20px;
+
+}
+
+
+@media (max-width: 780px) {
+    .side {
+        display: none;
+    }
+    .d_mobile{
+        display: none;
+
+    }
+}
