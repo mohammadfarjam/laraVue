@@ -53,16 +53,11 @@ import Layout from "./Layout";
 
 export default {
     components: {Layout},
-    // data() {
-    //     return {}
-    // }
-    // new Vue({
-    //     el: "#app",
-
     data: () => ({
         user_name: "",
         password: "",
         errors: {},
+        data:{},
     }),
 
     methods: {

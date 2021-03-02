@@ -2054,16 +2054,12 @@ __webpack_require__.r(__webpack_exports__);
   components: {
     Layout: _Layout__WEBPACK_IMPORTED_MODULE_0__.default
   },
-  // data() {
-  //     return {}
-  // }
-  // new Vue({
-  //     el: "#app",
   data: function data() {
     return {
       user_name: "",
       password: "",
-      errors: {}
+      errors: {},
+      data: {}
     };
   },
   methods: {
@@ -2106,6 +2102,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _Layout__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Layout */ "./resources/js/components/Layout.vue");
+/* harmony import */ var vue_dist_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue/dist/vue */ "./node_modules/vue/dist/vue.js");
+/* harmony import */ var vue_dist_vue__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue_dist_vue__WEBPACK_IMPORTED_MODULE_1__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2172,12 +2180,35 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
     Layout: _Layout__WEBPACK_IMPORTED_MODULE_0__.default
   },
   data: function data() {
-    return {};
+    return {
+      user_name: "",
+      email: "",
+      password: "",
+      confirm_password: "",
+      errors: {}
+    };
+  },
+  methods: {
+    register: function register() {
+      this.errors = {};
+
+      if (!this.user_name) {
+        vue_dist_vue__WEBPACK_IMPORTED_MODULE_1___default().set(this.errors, "username", "نام کاربری خود را وارد نمایید");
+      }
+
+      if (!this.email) {
+        vue_dist_vue__WEBPACK_IMPORTED_MODULE_1___default().set(this.errors, "email", "ایمیل خود را وارد نمایید");
+      }
+    },
+    validEmail: function validEmail() {
+      console.log(this.email);
+    }
   }
 });
 
@@ -38543,10 +38574,10 @@ var render = function() {
       _c("div", { staticClass: "d-flex flex-row" }, [
         _vm._m(0),
         _vm._v(" "),
-        _c("div", { staticClass: "col-lg-6 col-md-12 col-sm-12 " }, [
+        _c("div", { staticClass: "col-lg-6 col-md-12 col-sm-12" }, [
           _c("section", { staticClass: "main" }, [
             _c("div", { staticClass: "login-container" }, [
-              _c("h1", { staticClass: "title" }, [_vm._v(" ثبت نام")]),
+              _c("h1", { staticClass: "title" }, [_vm._v("ثبت نام")]),
               _vm._v(" "),
               _c("form", { staticClass: "login-form", attrs: { action: "" } }, [
                 _c("div", { staticClass: "form-control1" }, [
@@ -38559,7 +38590,11 @@ var render = function() {
                         expression: "user_name"
                       }
                     ],
-                    attrs: { type: "text", placeholder: "نام کاربری  " },
+                    attrs: {
+                      type: "text",
+                      placeholder: "نام کاربری  ",
+                      name: "user_name"
+                    },
                     domProps: { value: _vm.user_name },
                     on: {
                       input: function($event) {
@@ -38571,7 +38606,11 @@ var render = function() {
                     }
                   }),
                   _vm._v(" "),
-                  _c("i", { staticClass: "fas fa-user" })
+                  _c("i", { staticClass: "fas fa-user" }),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "error" }, [
+                    _vm._v(_vm._s(_vm.errors.username))
+                  ])
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "form-control1" }, [
@@ -38580,23 +38619,42 @@ var render = function() {
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.user_name,
-                        expression: "user_name"
+                        value: _vm.email,
+                        expression: "email"
                       }
                     ],
                     attrs: { type: "email", placeholder: "ایمیل" },
-                    domProps: { value: _vm.user_name },
+                    domProps: { value: _vm.email },
                     on: {
+                      keyup: function($event) {
+                        if (
+                          !$event.type.indexOf("key") &&
+                          _vm._k(
+                            $event.keyCode,
+                            "enter",
+                            13,
+                            $event.key,
+                            "Enter"
+                          )
+                        ) {
+                          return null
+                        }
+                        return _vm.validEmail()
+                      },
                       input: function($event) {
                         if ($event.target.composing) {
                           return
                         }
-                        _vm.user_name = $event.target.value
+                        _vm.email = $event.target.value
                       }
                     }
                   }),
                   _vm._v(" "),
-                  _c("i", { staticClass: "fas fa-envelope" })
+                  _c("i", { staticClass: "fas fa-envelope" }),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "error" }, [
+                    _vm._v(_vm._s(_vm.errors.email))
+                  ])
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "form-control1" }, [
@@ -38630,18 +38688,18 @@ var render = function() {
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.password,
-                        expression: "password"
+                        value: _vm.confirm_password,
+                        expression: "confirm_password"
                       }
                     ],
                     attrs: { type: "password", placeholder: "تکرار رمز عبور " },
-                    domProps: { value: _vm.password },
+                    domProps: { value: _vm.confirm_password },
                     on: {
                       input: function($event) {
                         if ($event.target.composing) {
                           return
                         }
-                        _vm.password = $event.target.value
+                        _vm.confirm_password = $event.target.value
                       }
                     }
                   }),
@@ -38651,12 +38709,16 @@ var render = function() {
                 _vm._v(" "),
                 _c(
                   "button",
-                  { staticClass: "submit", on: { click: _vm.checkUserData } },
-                  [
-                    _vm._v(
-                      "\n                            ثبت نام\n                        "
-                    )
-                  ]
+                  {
+                    staticClass: "submit",
+                    on: {
+                      click: function($event) {
+                        $event.preventDefault()
+                        return _vm.register($event)
+                      }
+                    }
+                  },
+                  [_vm._v("ثبت نام")]
                 )
               ])
             ])
@@ -38673,7 +38735,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "col-lg-6 p-0 d_mobile" }, [
-      _c("section", { staticClass: "side " }, [
+      _c("section", { staticClass: "side" }, [
         _c("img", { attrs: { src: "/image/img.svg" } })
       ])
     ])

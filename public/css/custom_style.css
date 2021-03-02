@@ -115,6 +115,14 @@ button.submit:hover {
 
 }
 
+.error {
+    color: #ff415a;
+    direction: rtl;
+    text-align: right;
+    margin-right: 30px;
+    margin-top: 5px;
+}
+
 
 @media (max-width: 780px) {
     .side {
