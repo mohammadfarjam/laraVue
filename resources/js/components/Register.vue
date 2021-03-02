@@ -33,11 +33,12 @@
                                     type="email"
                                     placeholder="ایمیل"
                                     v-model="email"
-                                    @keyup.enter="validEmail()"
+                                    @keyup.prevent="validEmail"
                                 />
                                 <i class="fas fa-envelope"></i>
 
                                 <div class="error">{{ errors.email }}</div>
+                                <div class="error">{{ errors.valid_email }}</div>
                             </div>
 
                             <div class="form-control1">
@@ -78,6 +79,9 @@ import Layout from "./Layout";
 import Vue from "vue/dist/vue";
 
 export default {
+    rules: {
+        'no-console': 'off',
+    },
     components: {Layout},
 
     data: () => ({
@@ -101,10 +105,22 @@ export default {
         },
 
 
-            validEmail(){
-                console.log(this.email)
 
+
+        validEmail () {
+            if(this.email){
+                if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.email)) {
+                    Vue.set(this.errors, "valid_email", "");
+
+                } else {
+                    Vue.set(this.errors, "valid_email", "آدرس ایمیل معتبر نمی باشد");
+                }
+            }else {
+                Vue.set(this.errors, "valid_email", "");
             }
+
+
+            },
 
     },
 };

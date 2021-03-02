@@ -2179,9 +2179,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  rules: {
+    'no-console': 'off'
+  },
   components: {
     Layout: _Layout__WEBPACK_IMPORTED_MODULE_0__.default
   },
@@ -2207,7 +2211,15 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     validEmail: function validEmail() {
-      console.log(this.email);
+      if (this.email) {
+        if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.email)) {
+          vue_dist_vue__WEBPACK_IMPORTED_MODULE_1___default().set(this.errors, "valid_email", "");
+        } else {
+          vue_dist_vue__WEBPACK_IMPORTED_MODULE_1___default().set(this.errors, "valid_email", "آدرس ایمیل معتبر نمی باشد");
+        }
+      } else {
+        vue_dist_vue__WEBPACK_IMPORTED_MODULE_1___default().set(this.errors, "valid_email", "");
+      }
     }
   }
 });
@@ -38627,19 +38639,8 @@ var render = function() {
                     domProps: { value: _vm.email },
                     on: {
                       keyup: function($event) {
-                        if (
-                          !$event.type.indexOf("key") &&
-                          _vm._k(
-                            $event.keyCode,
-                            "enter",
-                            13,
-                            $event.key,
-                            "Enter"
-                          )
-                        ) {
-                          return null
-                        }
-                        return _vm.validEmail()
+                        $event.preventDefault()
+                        return _vm.validEmail($event)
                       },
                       input: function($event) {
                         if ($event.target.composing) {
@@ -38654,6 +38655,10 @@ var render = function() {
                   _vm._v(" "),
                   _c("div", { staticClass: "error" }, [
                     _vm._v(_vm._s(_vm.errors.email))
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "error" }, [
+                    _vm._v(_vm._s(_vm.errors.valid_email))
                   ])
                 ]),
                 _vm._v(" "),
