@@ -19,20 +19,20 @@
                                 <input
                                     type="text"
                                     placeholder="نام کاربری  "
-                                    v-model="user_name"
-                                    name="user_name"
+                                    v-model="form.name"
+                                    name="name"
                                 />
 
                                 <i class="fas fa-user"></i>
 
-                                <div class="error">{{ errors.username }}</div>
+                                <div class="error">{{ errors.name }}</div>
                             </div>
 
                             <div class="form-control1">
                                 <input
                                     type="email"
                                     placeholder="ایمیل"
-                                    v-model="email"
+                                    v-model="form.email"
                                     @keyup.prevent="validEmail"
                                 />
                                 <i class="fas fa-envelope"></i>
@@ -45,7 +45,7 @@
                                 <input
                                     type="password"
                                     placeholder="رمز عبور "
-                                    v-model="password"
+                                    v-model="form.password"
                                     @keyup.prevent="checkPassword"
                                 />
                                 <i class="fas fa-lock"></i>
@@ -58,13 +58,13 @@
                                     type="password"
                                     name="password_confirmation"
                                     placeholder="تکرار رمز عبور "
-                                    v-model="password_confirmation"
+                                    v-model="form.password_confirmation"
                                     @keyup.prevent="checkConfirmPassword"
                                 />
                                 <i class="fas fa-lock"></i>
 
-<!--                                <div class="error" v-html="errors.password_confirmation"></div>-->
-<!--                                <div class="error" v-html="errors.check_password_confirmation"></div>-->
+                               <div class="error" v-html="errors.password_confirmation"></div>
+                               <div class="error" v-html="errors.check_password_confirmation"></div>
                             </div>
                             <button class="submit" @click.prevent="register" >ثبت نام</button>
                         </form>
@@ -88,7 +88,7 @@ export default {
     data (){
         return{
             form:{
-                user_name: "",
+                name: "",
                 email: "",
                 password: "",
                 password_confirmation: "",
@@ -105,23 +105,27 @@ export default {
         register() {
             this.errors = {};
 
-            // if (!this.user_name) {
-            //     Vue.set(this.errors, "username", "نام کاربری خود را وارد نمایید");
-            // }
-            // if (!this.email) {
-            //     Vue.set(this.errors, "email", "ایمیل خود را وارد نمایید");
-            // }
-            //
-            // if (!this.password) {
-            //     Vue.set(this.errors, "password", "رمز عبور خود را وارد نمایید");
-            // }
-            //
-            // if (this.password && this.password.length < 8) {
-            //     Vue.set(this.errors, "password_length", "رمز عبور باید بیش از 8 کاراکتر باشد");
-            // }
-            // if (!this.confirm_password) {
-            //     Vue.set(this.errors, "password_confirmation", "تکرار رمز عبور را وارد نمایید ");
-            // }
+            if (!this.form.name) {
+                Vue.set(this.errors, "name", "نام کاربری خود را وارد نمایید");
+            }
+
+            if (!this.form.email) {
+                Vue.set(this.errors, "email", "ایمیل خود را وارد نمایید");
+            }
+            
+            if (!this.form.password) {
+                Vue.set(this.errors, "password", "رمز عبور خود را وارد نمایید");
+            }
+            
+            if (this.form.password && this.form.password.length < 8) {
+                Vue.set(this.errors, "password_length", "رمز عبور باید بیش از 8 کاراکتر باشد");
+            }
+            if (!this.form.password_confirmation) {
+                Vue.set(this.errors, "password_confirmation", "تکرار رمز عبور را وارد نمایید ");
+            }else{
+                Vue.set(this.errors, "password_confirmation", "");
+
+            }
 
 
 
@@ -135,38 +139,38 @@ export default {
 
 
         validEmail() {
-            if (this.email) {
-                if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.email)) {
+            if (this.form.email) {
+                if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.form.email)) {
                     Vue.set(this.errors, "valid_email", "");
-
-                } else {
+            } else {
+                  Vue.set(this.errors, "email", "");
                     Vue.set(this.errors, "valid_email", "آدرس ایمیل معتبر نمی باشد");
                 }
             } else {
+                 Vue.set(this.errors, "email", "");
                 Vue.set(this.errors, "valid_email", "");
-                Vue.set(this.errors, "email", "");
+               }
+        },
+
+        checkPassword(){
+            if (this.form.password.length > 0){
+                Vue.set(this.errors, "password", "");
             }
         },
 
-
         checkConfirmPassword(){
-            if (this.password_confirmation!== this.password) {
+            if (this.form.password_confirmation !== this.form.password) {
                 Vue.set(this.errors, "check_password_confirmation", "تکرار رمز عبور تطابق ندارد ");
             }else{
                 Vue.set(this.errors, "check_password_confirmation", "");
             }
 
-            if (this.password_confirmation.length > 0){
+            if (!this.form.password_confirmation){
                 Vue.set(this.errors, "password_confirmation", "");
-
-            }
+                }
         },
 
-        checkPassword(){
-            if (this.password.length > 0){
-                Vue.set(this.errors, "password", "");
-            }
-        },
+        
 
 
 

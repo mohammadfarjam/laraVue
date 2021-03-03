@@ -2194,7 +2194,7 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       form: {
-        user_name: "",
+        name: "",
         email: "",
         password: "",
         password_confirmation: ""
@@ -2207,23 +2207,29 @@ __webpack_require__.r(__webpack_exports__);
     register: function register() {
       var _this = this;
 
-      this.errors = {}; // if (!this.user_name) {
-      //     Vue.set(this.errors, "username", "نام کاربری خود را وارد نمایید");
-      // }
-      // if (!this.email) {
-      //     Vue.set(this.errors, "email", "ایمیل خود را وارد نمایید");
-      // }
-      //
-      // if (!this.password) {
-      //     Vue.set(this.errors, "password", "رمز عبور خود را وارد نمایید");
-      // }
-      //
-      // if (this.password && this.password.length < 8) {
-      //     Vue.set(this.errors, "password_length", "رمز عبور باید بیش از 8 کاراکتر باشد");
-      // }
-      // if (!this.confirm_password) {
-      //     Vue.set(this.errors, "password_confirmation", "تکرار رمز عبور را وارد نمایید ");
-      // }
+      this.errors = {};
+
+      if (!this.form.name) {
+        vue_dist_vue__WEBPACK_IMPORTED_MODULE_2___default().set(this.errors, "name", "نام کاربری خود را وارد نمایید");
+      }
+
+      if (!this.form.email) {
+        vue_dist_vue__WEBPACK_IMPORTED_MODULE_2___default().set(this.errors, "email", "ایمیل خود را وارد نمایید");
+      }
+
+      if (!this.form.password) {
+        vue_dist_vue__WEBPACK_IMPORTED_MODULE_2___default().set(this.errors, "password", "رمز عبور خود را وارد نمایید");
+      }
+
+      if (this.form.password && this.form.password.length < 8) {
+        vue_dist_vue__WEBPACK_IMPORTED_MODULE_2___default().set(this.errors, "password_length", "رمز عبور باید بیش از 8 کاراکتر باشد");
+      }
+
+      if (!this.form.password_confirmation) {
+        vue_dist_vue__WEBPACK_IMPORTED_MODULE_2___default().set(this.errors, "password_confirmation", "تکرار رمز عبور را وارد نمایید ");
+      } else {
+        vue_dist_vue__WEBPACK_IMPORTED_MODULE_2___default().set(this.errors, "password_confirmation", "");
+      }
 
       axios__WEBPACK_IMPORTED_MODULE_1___default().post('/api/register', this.form).then(function () {
         console.log('saved');
@@ -2232,31 +2238,32 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     validEmail: function validEmail() {
-      if (this.email) {
-        if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.email)) {
+      if (this.form.email) {
+        if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.form.email)) {
           vue_dist_vue__WEBPACK_IMPORTED_MODULE_2___default().set(this.errors, "valid_email", "");
         } else {
+          vue_dist_vue__WEBPACK_IMPORTED_MODULE_2___default().set(this.errors, "email", "");
           vue_dist_vue__WEBPACK_IMPORTED_MODULE_2___default().set(this.errors, "valid_email", "آدرس ایمیل معتبر نمی باشد");
         }
       } else {
-        vue_dist_vue__WEBPACK_IMPORTED_MODULE_2___default().set(this.errors, "valid_email", "");
         vue_dist_vue__WEBPACK_IMPORTED_MODULE_2___default().set(this.errors, "email", "");
+        vue_dist_vue__WEBPACK_IMPORTED_MODULE_2___default().set(this.errors, "valid_email", "");
+      }
+    },
+    checkPassword: function checkPassword() {
+      if (this.form.password.length > 0) {
+        vue_dist_vue__WEBPACK_IMPORTED_MODULE_2___default().set(this.errors, "password", "");
       }
     },
     checkConfirmPassword: function checkConfirmPassword() {
-      if (this.password_confirmation !== this.password) {
+      if (this.form.password_confirmation !== this.form.password) {
         vue_dist_vue__WEBPACK_IMPORTED_MODULE_2___default().set(this.errors, "check_password_confirmation", "تکرار رمز عبور تطابق ندارد ");
       } else {
         vue_dist_vue__WEBPACK_IMPORTED_MODULE_2___default().set(this.errors, "check_password_confirmation", "");
       }
 
-      if (this.password_confirmation.length > 0) {
+      if (!this.form.password_confirmation) {
         vue_dist_vue__WEBPACK_IMPORTED_MODULE_2___default().set(this.errors, "password_confirmation", "");
-      }
-    },
-    checkPassword: function checkPassword() {
-      if (this.password.length > 0) {
-        vue_dist_vue__WEBPACK_IMPORTED_MODULE_2___default().set(this.errors, "password", "");
       }
     }
   }
@@ -38640,22 +38647,22 @@ var render = function() {
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.user_name,
-                        expression: "user_name"
+                        value: _vm.form.name,
+                        expression: "form.name"
                       }
                     ],
                     attrs: {
                       type: "text",
                       placeholder: "نام کاربری  ",
-                      name: "user_name"
+                      name: "name"
                     },
-                    domProps: { value: _vm.user_name },
+                    domProps: { value: _vm.form.name },
                     on: {
                       input: function($event) {
                         if ($event.target.composing) {
                           return
                         }
-                        _vm.user_name = $event.target.value
+                        _vm.$set(_vm.form, "name", $event.target.value)
                       }
                     }
                   }),
@@ -38663,7 +38670,7 @@ var render = function() {
                   _c("i", { staticClass: "fas fa-user" }),
                   _vm._v(" "),
                   _c("div", { staticClass: "error" }, [
-                    _vm._v(_vm._s(_vm.errors.username))
+                    _vm._v(_vm._s(_vm.errors.name))
                   ])
                 ]),
                 _vm._v(" "),
@@ -38673,12 +38680,12 @@ var render = function() {
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.email,
-                        expression: "email"
+                        value: _vm.form.email,
+                        expression: "form.email"
                       }
                     ],
                     attrs: { type: "email", placeholder: "ایمیل" },
-                    domProps: { value: _vm.email },
+                    domProps: { value: _vm.form.email },
                     on: {
                       keyup: function($event) {
                         $event.preventDefault()
@@ -38688,7 +38695,7 @@ var render = function() {
                         if ($event.target.composing) {
                           return
                         }
-                        _vm.email = $event.target.value
+                        _vm.$set(_vm.form, "email", $event.target.value)
                       }
                     }
                   }),
@@ -38712,12 +38719,12 @@ var render = function() {
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.password,
-                        expression: "password"
+                        value: _vm.form.password,
+                        expression: "form.password"
                       }
                     ],
                     attrs: { type: "password", placeholder: "رمز عبور " },
-                    domProps: { value: _vm.password },
+                    domProps: { value: _vm.form.password },
                     on: {
                       keyup: function($event) {
                         $event.preventDefault()
@@ -38727,7 +38734,7 @@ var render = function() {
                         if ($event.target.composing) {
                           return
                         }
-                        _vm.password = $event.target.value
+                        _vm.$set(_vm.form, "password", $event.target.value)
                       }
                     }
                   }),
@@ -38751,8 +38758,8 @@ var render = function() {
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.password_confirmation,
-                        expression: "password_confirmation"
+                        value: _vm.form.password_confirmation,
+                        expression: "form.password_confirmation"
                       }
                     ],
                     attrs: {
@@ -38760,7 +38767,7 @@ var render = function() {
                       name: "password_confirmation",
                       placeholder: "تکرار رمز عبور "
                     },
-                    domProps: { value: _vm.password_confirmation },
+                    domProps: { value: _vm.form.password_confirmation },
                     on: {
                       keyup: function($event) {
                         $event.preventDefault()
@@ -38770,7 +38777,11 @@ var render = function() {
                         if ($event.target.composing) {
                           return
                         }
-                        _vm.password_confirmation = $event.target.value
+                        _vm.$set(
+                          _vm.form,
+                          "password_confirmation",
+                          $event.target.value
+                        )
                       }
                     }
                   }),
