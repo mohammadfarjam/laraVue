@@ -37,8 +37,8 @@
                                 />
                                 <i class="fas fa-envelope"></i>
 
-                                <div class="error">{{ errors.email }}</div>
-                                <div class="error">{{ errors.valid_email }}</div>
+                                <div class="error" v-html="errors.email"></div>
+                                <div class="error" v-html="errors.valid_email"></div>
                             </div>
 
                             <div class="form-control1">
@@ -46,25 +46,27 @@
                                     type="password"
                                     placeholder="رمز عبور "
                                     v-model="password"
+                                    @keyup.prevent="checkPassword"
                                 />
                                 <i class="fas fa-lock"></i>
-
-                                <!--                        <div class="error">{{ errors.password }}</div>-->
-                                <!--                        <div class="error">{{ errors.password_length }}</div>-->
+                                <div class="error" v-html="errors.password"></div>
+                                <div class="error" v-html="errors.password_length "></div>
                             </div>
 
                             <div class="form-control1">
                                 <input
                                     type="password"
+                                    name="password_confirmation"
                                     placeholder="تکرار رمز عبور "
-                                    v-model="confirm_password"
+                                    v-model="password_confirmation"
+                                    @keyup.prevent="checkConfirmPassword"
                                 />
                                 <i class="fas fa-lock"></i>
 
-                                <!--                        <div class="error">{{ errors.password }}</div>-->
-                                <!--                        <div class="error">{{ errors.password_length }}</div>-->
+<!--                                <div class="error" v-html="errors.password_confirmation"></div>-->
+<!--                                <div class="error" v-html="errors.check_password_confirmation"></div>-->
                             </div>
-                            <button class="submit" @click.prevent="register">ثبت نام</button>
+                            <button class="submit" @click.prevent="register" >ثبت نام</button>
                         </form>
                     </div>
                 </section>
@@ -77,50 +79,98 @@
 <script>
 import Layout from "./Layout";
 import Vue from "vue/dist/vue";
+import axios from "axios";
 
 export default {
-    rules: {
-        'no-console': 'off',
-    },
+
     components: {Layout},
 
-    data: () => ({
-        user_name: "",
-        email: "",
-        password: "",
-        confirm_password: "",
-        errors: {},
-    }),
+    data (){
+        return{
+            form:{
+                user_name: "",
+                email: "",
+                password: "",
+                password_confirmation: "",
+            },
+            errors: {},
+            err: [],
+        }
+    },
+
+
+
 
     methods: {
         register() {
             this.errors = {};
 
-            if (!this.user_name) {
-                Vue.set(this.errors, "username", "نام کاربری خود را وارد نمایید");
-            }
-            if (!this.email) {
-                Vue.set(this.errors, "email", "ایمیل خود را وارد نمایید");
-            }
+            // if (!this.user_name) {
+            //     Vue.set(this.errors, "username", "نام کاربری خود را وارد نمایید");
+            // }
+            // if (!this.email) {
+            //     Vue.set(this.errors, "email", "ایمیل خود را وارد نمایید");
+            // }
+            //
+            // if (!this.password) {
+            //     Vue.set(this.errors, "password", "رمز عبور خود را وارد نمایید");
+            // }
+            //
+            // if (this.password && this.password.length < 8) {
+            //     Vue.set(this.errors, "password_length", "رمز عبور باید بیش از 8 کاراکتر باشد");
+            // }
+            // if (!this.confirm_password) {
+            //     Vue.set(this.errors, "password_confirmation", "تکرار رمز عبور را وارد نمایید ");
+            // }
+
+
+
+                axios.post('/api/register',this.form).then(() =>{
+                    console.log('saved');
+                }).catch((error) => {
+                    this.err=error.response.data.errors;
+                })
+
         },
 
 
-
-
-        validEmail () {
-            if(this.email){
+        validEmail() {
+            if (this.email) {
                 if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.email)) {
                     Vue.set(this.errors, "valid_email", "");
 
                 } else {
                     Vue.set(this.errors, "valid_email", "آدرس ایمیل معتبر نمی باشد");
                 }
-            }else {
+            } else {
                 Vue.set(this.errors, "valid_email", "");
+                Vue.set(this.errors, "email", "");
+            }
+        },
+
+
+        checkConfirmPassword(){
+            if (this.password_confirmation!== this.password) {
+                Vue.set(this.errors, "check_password_confirmation", "تکرار رمز عبور تطابق ندارد ");
+            }else{
+                Vue.set(this.errors, "check_password_confirmation", "");
             }
 
+            if (this.password_confirmation.length > 0){
+                Vue.set(this.errors, "password_confirmation", "");
 
-            },
+            }
+        },
+
+        checkPassword(){
+            if (this.password.length > 0){
+                Vue.set(this.errors, "password", "");
+            }
+        },
+
+
+
+
 
     },
 };

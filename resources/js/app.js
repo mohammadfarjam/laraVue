@@ -1,10 +1,12 @@
-import Vue from 'vue/dist/vue'
+import Vue from 'vue/dist/vue';
 require('./bootstrap');
 
 window.Vue = require('vue');
 import VueRouter from 'vue-router';
 import routes from './routes';
+import axios from "axios";
 Vue.use(VueRouter);
+Vue.use(axios);
 
 
 

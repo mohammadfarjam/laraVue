@@ -2102,8 +2102,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _Layout__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Layout */ "./resources/js/components/Layout.vue");
-/* harmony import */ var vue_dist_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue/dist/vue */ "./node_modules/vue/dist/vue.js");
-/* harmony import */ var vue_dist_vue__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue_dist_vue__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var vue_dist_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue/dist/vue */ "./node_modules/vue/dist/vue.js");
+/* harmony import */ var vue_dist_vue__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(vue_dist_vue__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
 //
 //
 //
@@ -2180,45 +2182,81 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  rules: {
-    'no-console': 'off'
-  },
   components: {
     Layout: _Layout__WEBPACK_IMPORTED_MODULE_0__.default
   },
   data: function data() {
     return {
-      user_name: "",
-      email: "",
-      password: "",
-      confirm_password: "",
-      errors: {}
+      form: {
+        user_name: "",
+        email: "",
+        password: "",
+        password_confirmation: ""
+      },
+      errors: {},
+      err: []
     };
   },
   methods: {
     register: function register() {
-      this.errors = {};
+      var _this = this;
 
-      if (!this.user_name) {
-        vue_dist_vue__WEBPACK_IMPORTED_MODULE_1___default().set(this.errors, "username", "نام کاربری خود را وارد نمایید");
-      }
+      this.errors = {}; // if (!this.user_name) {
+      //     Vue.set(this.errors, "username", "نام کاربری خود را وارد نمایید");
+      // }
+      // if (!this.email) {
+      //     Vue.set(this.errors, "email", "ایمیل خود را وارد نمایید");
+      // }
+      //
+      // if (!this.password) {
+      //     Vue.set(this.errors, "password", "رمز عبور خود را وارد نمایید");
+      // }
+      //
+      // if (this.password && this.password.length < 8) {
+      //     Vue.set(this.errors, "password_length", "رمز عبور باید بیش از 8 کاراکتر باشد");
+      // }
+      // if (!this.confirm_password) {
+      //     Vue.set(this.errors, "password_confirmation", "تکرار رمز عبور را وارد نمایید ");
+      // }
 
-      if (!this.email) {
-        vue_dist_vue__WEBPACK_IMPORTED_MODULE_1___default().set(this.errors, "email", "ایمیل خود را وارد نمایید");
-      }
+      axios__WEBPACK_IMPORTED_MODULE_1___default().post('/api/register', this.form).then(function () {
+        console.log('saved');
+      })["catch"](function (error) {
+        _this.err = error.response.data.errors;
+      });
     },
     validEmail: function validEmail() {
       if (this.email) {
         if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.email)) {
-          vue_dist_vue__WEBPACK_IMPORTED_MODULE_1___default().set(this.errors, "valid_email", "");
+          vue_dist_vue__WEBPACK_IMPORTED_MODULE_2___default().set(this.errors, "valid_email", "");
         } else {
-          vue_dist_vue__WEBPACK_IMPORTED_MODULE_1___default().set(this.errors, "valid_email", "آدرس ایمیل معتبر نمی باشد");
+          vue_dist_vue__WEBPACK_IMPORTED_MODULE_2___default().set(this.errors, "valid_email", "آدرس ایمیل معتبر نمی باشد");
         }
       } else {
-        vue_dist_vue__WEBPACK_IMPORTED_MODULE_1___default().set(this.errors, "valid_email", "");
+        vue_dist_vue__WEBPACK_IMPORTED_MODULE_2___default().set(this.errors, "valid_email", "");
+        vue_dist_vue__WEBPACK_IMPORTED_MODULE_2___default().set(this.errors, "email", "");
+      }
+    },
+    checkConfirmPassword: function checkConfirmPassword() {
+      if (this.password_confirmation !== this.password) {
+        vue_dist_vue__WEBPACK_IMPORTED_MODULE_2___default().set(this.errors, "check_password_confirmation", "تکرار رمز عبور تطابق ندارد ");
+      } else {
+        vue_dist_vue__WEBPACK_IMPORTED_MODULE_2___default().set(this.errors, "check_password_confirmation", "");
+      }
+
+      if (this.password_confirmation.length > 0) {
+        vue_dist_vue__WEBPACK_IMPORTED_MODULE_2___default().set(this.errors, "password_confirmation", "");
+      }
+    },
+    checkPassword: function checkPassword() {
+      if (this.password.length > 0) {
+        vue_dist_vue__WEBPACK_IMPORTED_MODULE_2___default().set(this.errors, "password", "");
       }
     }
   }
@@ -2234,10 +2272,12 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var vue_dist_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue/dist/vue */ "./node_modules/vue/dist/vue.js");
-/* harmony import */ var vue_dist_vue__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue_dist_vue__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
+/* harmony import */ var vue_dist_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue/dist/vue */ "./node_modules/vue/dist/vue.js");
+/* harmony import */ var vue_dist_vue__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(vue_dist_vue__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
 /* harmony import */ var _routes__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./routes */ "./resources/js/routes.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
 
 
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
@@ -2245,11 +2285,13 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
 
 
-vue_dist_vue__WEBPACK_IMPORTED_MODULE_1___default().use(vue_router__WEBPACK_IMPORTED_MODULE_2__.default); // Vue.component('header', require('./components/Header.vue').default);
 
-var app = new (vue_dist_vue__WEBPACK_IMPORTED_MODULE_1___default())({
+vue_dist_vue__WEBPACK_IMPORTED_MODULE_2___default().use(vue_router__WEBPACK_IMPORTED_MODULE_3__.default);
+vue_dist_vue__WEBPACK_IMPORTED_MODULE_2___default().use((axios__WEBPACK_IMPORTED_MODULE_1___default())); // Vue.component('header', require('./components/Header.vue').default);
+
+var app = new (vue_dist_vue__WEBPACK_IMPORTED_MODULE_2___default())({
   el: '#app',
-  router: new vue_router__WEBPACK_IMPORTED_MODULE_2__.default(_routes__WEBPACK_IMPORTED_MODULE_0__.default)
+  router: new vue_router__WEBPACK_IMPORTED_MODULE_3__.default(_routes__WEBPACK_IMPORTED_MODULE_0__.default)
 });
 
 /***/ }),
@@ -38653,13 +38695,15 @@ var render = function() {
                   _vm._v(" "),
                   _c("i", { staticClass: "fas fa-envelope" }),
                   _vm._v(" "),
-                  _c("div", { staticClass: "error" }, [
-                    _vm._v(_vm._s(_vm.errors.email))
-                  ]),
+                  _c("div", {
+                    staticClass: "error",
+                    domProps: { innerHTML: _vm._s(_vm.errors.email) }
+                  }),
                   _vm._v(" "),
-                  _c("div", { staticClass: "error" }, [
-                    _vm._v(_vm._s(_vm.errors.valid_email))
-                  ])
+                  _c("div", {
+                    staticClass: "error",
+                    domProps: { innerHTML: _vm._s(_vm.errors.valid_email) }
+                  })
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "form-control1" }, [
@@ -38675,6 +38719,10 @@ var render = function() {
                     attrs: { type: "password", placeholder: "رمز عبور " },
                     domProps: { value: _vm.password },
                     on: {
+                      keyup: function($event) {
+                        $event.preventDefault()
+                        return _vm.checkPassword($event)
+                      },
                       input: function($event) {
                         if ($event.target.composing) {
                           return
@@ -38684,7 +38732,17 @@ var render = function() {
                     }
                   }),
                   _vm._v(" "),
-                  _c("i", { staticClass: "fas fa-lock" })
+                  _c("i", { staticClass: "fas fa-lock" }),
+                  _vm._v(" "),
+                  _c("div", {
+                    staticClass: "error",
+                    domProps: { innerHTML: _vm._s(_vm.errors.password) }
+                  }),
+                  _vm._v(" "),
+                  _c("div", {
+                    staticClass: "error",
+                    domProps: { innerHTML: _vm._s(_vm.errors.password_length) }
+                  })
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "form-control1" }, [
@@ -38693,23 +38751,45 @@ var render = function() {
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.confirm_password,
-                        expression: "confirm_password"
+                        value: _vm.password_confirmation,
+                        expression: "password_confirmation"
                       }
                     ],
-                    attrs: { type: "password", placeholder: "تکرار رمز عبور " },
-                    domProps: { value: _vm.confirm_password },
+                    attrs: {
+                      type: "password",
+                      name: "password_confirmation",
+                      placeholder: "تکرار رمز عبور "
+                    },
+                    domProps: { value: _vm.password_confirmation },
                     on: {
+                      keyup: function($event) {
+                        $event.preventDefault()
+                        return _vm.checkConfirmPassword($event)
+                      },
                       input: function($event) {
                         if ($event.target.composing) {
                           return
                         }
-                        _vm.confirm_password = $event.target.value
+                        _vm.password_confirmation = $event.target.value
                       }
                     }
                   }),
                   _vm._v(" "),
-                  _c("i", { staticClass: "fas fa-lock" })
+                  _c("i", { staticClass: "fas fa-lock" }),
+                  _vm._v(" "),
+                  _c("div", {
+                    staticClass: "error",
+                    domProps: {
+                      innerHTML: _vm._s(_vm.errors.password_confirmation)
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("div", {
+                    staticClass: "error",
+                    domProps: {
+                      innerHTML: _vm._s(_vm.errors.check_password_confirmation)
+                    }
+                  })
                 ]),
                 _vm._v(" "),
                 _c(
