@@ -18,21 +18,20 @@
 
                         <form action="" class="login-form">
                             <div class="form-control1">
-                                <input type="text" placeholder="نام کاربری / ایمیل  " v-model="user_name"/>
+                                <input type="text" placeholder="نام کاربری / ایمیل  " v-model="form.email"/>
                                 <i class="fas fa-user"></i>
 
-                                <div class="error">{{ errors.username }}</div>
+                                <div class="error">{{ errors.email }}</div>
                             </div>
 
 
                             <div class="form-control1">
-                                <input type="password" placeholder="رمز عبور " v-model="password"/>
+                                <input type="password" placeholder="رمز عبور " v-model="form.password"/>
                                 <i class="fas fa-lock"></i>
 
                                 <div class="error">{{ errors.password }}</div>
-                                <div class="error">{{ errors.password_length }}</div>
                             </div>
-                            <button class="submit" @click="checkUserData">
+                            <button class="submit" @click.prevent="login">
                                 ورود
                             </button>
                         </form>
@@ -53,44 +52,31 @@ import Layout from "./Layout";
 
 export default {
     components: {Layout},
-    data: () => ({
-        user_name: "",
-        password: "",
-        errors: {},
-        data:{},
-    }),
+
+    data (){
+        return{
+            form:{
+                name: "",
+                email: "",
+                password: "",
+
+            },
+            errors: {},
+            err: [],
+        }
+    },
+
 
     methods: {
-        checkUserData(e) {
+        login() {
             this.errors = {};
 
-            if (!this.user_name) {
-                Vue.set(
-                    this.errors, "username", "نام کاربری خود را وارد نمایید"
-                );
+            if (!this.form.email) {
+                this.Vue.set(this.errors, "name", "نام کاربری  یا ایمیل خود را وارد نمایید");
             }
-
-            if (!this.password) {
-                Vue.set(
-                    this.errors, "password", "رمز عبور خود را وارد نمایید"
-                );
-            }
-
-            if (this.password.length < 8) {
-                Vue.set(
-                    this.errors, "password_length", "رمز عبور باید بیش از 8 کاراکتر باشد"
-                );
-            }
-
-            if (!this.errors.username && !this.errors.password && !this.errors.password_length) {
-                alert("خوش آمدید");
-            }
-
-            e.preventDefault();
-        },
-    },
-    // })
-
 }
+}
+}
+
 </script>
 

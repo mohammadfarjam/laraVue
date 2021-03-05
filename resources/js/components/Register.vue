@@ -21,6 +21,7 @@
                                     placeholder="نام کاربری  "
                                     v-model="form.name"
                                     name="name"
+                                    @keyup.prevent="checkName"
                                 />
 
                                 <i class="fas fa-user"></i>
@@ -79,7 +80,7 @@
 <script>
 import Layout from "./Layout";
 import Vue from "vue/dist/vue";
-import axios from "axios";
+// import axios from "axios";
 
 export default {
 
@@ -106,37 +107,47 @@ export default {
             this.errors = {};
 
             if (!this.form.name) {
-                Vue.set(this.errors, "name", "نام کاربری خود را وارد نمایید");
+              Vue.set(this.errors, "name", "نام کاربری خود را وارد نمایید");
             }
 
             if (!this.form.email) {
                 Vue.set(this.errors, "email", "ایمیل خود را وارد نمایید");
             }
-            
+
             if (!this.form.password) {
-                Vue.set(this.errors, "password", "رمز عبور خود را وارد نمایید");
+               Vue.set(this.errors, "password", "رمز عبور خود را وارد نمایید");
             }
-            
+
             if (this.form.password && this.form.password.length < 8) {
-                Vue.set(this.errors, "password_length", "رمز عبور باید بیش از 8 کاراکتر باشد");
+               Vue.set(this.errors, "password_length", "رمز عبور باید بیش از 8 کاراکتر باشد");
             }
             if (!this.form.password_confirmation) {
-                Vue.set(this.errors, "password_confirmation", "تکرار رمز عبور را وارد نمایید ");
+             Vue.set(this.errors, "password_confirmation", "تکرار رمز عبور را وارد نمایید ");
             }else{
-                Vue.set(this.errors, "password_confirmation", "");
-
+               Vue.set(this.errors, "password_confirmation", "");
             }
+            if(!this.errors) {
 
-
-
-                axios.post('/api/register',this.form).then(() =>{
+            }else{
+             axios.post('/api/register',this.form).then(() =>{
                     console.log('saved');
                 }).catch((error) => {
                     this.err=error.response.data.errors;
                 })
+            }
+
 
         },
 
+
+
+        checkName(){
+            if (!this.form.name) {
+
+        }else{
+                Vue.set(this.errors, "name", "");
+            }
+            },
 
         validEmail() {
             if (this.form.email) {
@@ -169,12 +180,6 @@ export default {
                 Vue.set(this.errors, "password_confirmation", "");
                 }
         },
-
-        
-
-
-
-
 
     },
 };

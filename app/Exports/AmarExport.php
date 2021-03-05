@@ -22,7 +22,7 @@ class AmarExport implements FromView
 {
     public function view(): View
     {
-        return view('zaher_excel',['Amars'=>Detail_folder::where('code_water', 'like', "%" . '20'. "%")->get()]);
+        return view('zaher_excel',['Amars'=>Detail_folder::where('code_water', 'like', "%" . '20'. "%")->where('folder_name', 'like', "%" . 'ج'. "%")->get()]);
     }
 }
 

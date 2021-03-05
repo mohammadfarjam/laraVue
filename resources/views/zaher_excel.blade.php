@@ -15,8 +15,8 @@
     @endphp
     @foreach($Amars as $amar)
         <tr>
-            <td></td>
-            <td>آبهای سطحی</td>
+            <td>قزوین</td>
+            <td>آب های سطحی</td>
             <td>{{$amar->folder_name}}</td>
             <td>{{$amar->total_count}}</td>
             <td></td>

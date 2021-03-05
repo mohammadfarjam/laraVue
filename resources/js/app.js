@@ -1,7 +1,7 @@
 import Vue from 'vue/dist/vue';
 require('./bootstrap');
 
-window.Vue = require('vue');
+window.Vue =new Vue;
 import VueRouter from 'vue-router';
 import routes from './routes';
 import axios from "axios";
