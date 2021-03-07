@@ -79,8 +79,9 @@
 
 <script>
 import Layout from "./Layout";
-import Vue from "vue/dist/vue";
-// import axios from "axios";
+import Vue from 'vue/dist/vue';
+import axios from "axios";
+
 
 export default {
 
@@ -95,7 +96,7 @@ export default {
                 password_confirmation: "",
             },
             errors: {},
-            err: [],
+            err: {},
         }
     },
 
@@ -129,10 +130,10 @@ export default {
             if(!this.errors) {
 
             }else{
-             axios.post('/api/register',this.form).then(() =>{
-                    console.log('saved');
+             Vue.axios.post('/api/register',this.form).then((response) =>{
+                 // console.log(response);
                 }).catch((error) => {
-                    this.err=error.response.data.errors;
+                    // console.log(error);
                 })
             }
 

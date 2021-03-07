@@ -27,8 +27,12 @@
     "dependencies": {
         "@fortawesome/fontawesome-free": "^5.15.1",
         "moment": "^2.29.1",
-        "sweetalert2": "^10.13.0",
-        "vee-validate": "^3.4.5",
+        "vue-axios": "^3.2.4",
         "vue-router": "^3.4.9"
+    },
+    "eslintConfig": {
+        "rules": {
+            "no-console": 0
+        }
     }
 }
