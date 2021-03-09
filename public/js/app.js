@@ -1999,7 +1999,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _Layout__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Layout */ "./resources/js/components/Layout.vue");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _Layout__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Layout */ "./resources/js/components/Layout.vue");
 //
 //
 //
@@ -2049,27 +2052,44 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
-    Layout: _Layout__WEBPACK_IMPORTED_MODULE_0__.default
+    Layout: _Layout__WEBPACK_IMPORTED_MODULE_1__.default
   },
   data: function data() {
     return {
       form: {
-        name: "",
         email: "",
         password: ""
       },
       errors: {},
-      err: []
+      err_server: {}
     };
   },
   methods: {
     login: function login() {
+      var _this = this;
+
       this.errors = {};
 
       if (!this.form.email) {
-        this.Vue.set(this.errors, "name", "نام کاربری  یا ایمیل خود را وارد نمایید");
+        vue__WEBPACK_IMPORTED_MODULE_2__.default.set(this.errors, "email", " نام کاربری / ایمیل خود را وارد نمایید");
+      }
+
+      if (!this.form.password) {
+        vue__WEBPACK_IMPORTED_MODULE_2__.default.set(this.errors, "password", "رمز عبور خود را وارد نمایید");
+      }
+
+      if (!this.errors.email && !this.errors.password) {
+        axios__WEBPACK_IMPORTED_MODULE_0___default().post('/api/login', this.form).then(function (response) {
+          _this.$router.push({
+            name: "dashboard"
+          });
+        })["catch"](function (error) {
+          _this.err_server = error.response.data.errors;
+        });
       }
     }
   }
@@ -2092,6 +2112,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _Layout__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Layout */ "./resources/js/components/Layout.vue");
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2207,27 +2233,25 @@ __webpack_require__.r(__webpack_exports__);
 
       if (!this.form.password) {
         vue__WEBPACK_IMPORTED_MODULE_2__.default.set(this.errors, "password", "رمز عبور خود را وارد نمایید");
-      }
+      } // if (this.form.password && this.form.password.length < 8) {
+      //     Vue.set(this.errors, "password_length", "رمز عبور باید بیش از 8 کاراکتر باشد");
+      // }
 
-      if (this.form.password && this.form.password.length < 8) {
-        vue__WEBPACK_IMPORTED_MODULE_2__.default.set(this.errors, "password_length", "رمز عبور باید بیش از 8 کاراکتر باشد");
-      }
 
       if (!this.form.password_confirmation) {
         vue__WEBPACK_IMPORTED_MODULE_2__.default.set(this.errors, "password_confirmation", "تکرار رمز عبور را وارد نمایید ");
-      } else {
-        vue__WEBPACK_IMPORTED_MODULE_2__.default.set(this.errors, "password_confirmation", "");
-      }
+      } //for send data to controller and validate
 
-      if (!this.errors) {} else {
+
+      if (!this.errors.name && !this.errors.email && !this.errors.password && !this.errors.password_confirmation) {
         axios__WEBPACK_IMPORTED_MODULE_0___default().post('/api/register', this.form).then(function (response) {})["catch"](function (error) {
           _this.err_server = error.response.data.errors;
         });
-      }
+      } else {}
     },
     checkName: function checkName() {
       if (!this.form.name) {} else {
-        vue__WEBPACK_IMPORTED_MODULE_2__.default.set(this.errors, "name", "");
+        vue__WEBPACK_IMPORTED_MODULE_2__.default.set(this.errors, "name", '');
       }
     },
     validEmail: function validEmail() {
@@ -2253,6 +2277,7 @@ __webpack_require__.r(__webpack_exports__);
         vue__WEBPACK_IMPORTED_MODULE_2__.default.set(this.errors, "check_password_confirmation", "تکرار رمز عبور تطابق ندارد ");
       } else {
         vue__WEBPACK_IMPORTED_MODULE_2__.default.set(this.errors, "check_password_confirmation", "");
+        vue__WEBPACK_IMPORTED_MODULE_2__.default.set(this.errors, "password_confirmation", "");
       }
 
       if (!this.form.password_confirmation) {
@@ -2350,7 +2375,8 @@ __webpack_require__.r(__webpack_exports__);
     component: _components_Login__WEBPACK_IMPORTED_MODULE_3__.default
   }, {
     path: '/dashboard',
-    component: _components_Dashboard__WEBPACK_IMPORTED_MODULE_4__.default
+    component: _components_Dashboard__WEBPACK_IMPORTED_MODULE_4__.default,
+    name: 'dashboard'
   }]
 });
 
@@ -20557,7 +20583,8 @@ var render = function() {
                     ],
                     attrs: {
                       type: "text",
-                      placeholder: "نام کاربری / ایمیل  "
+                      placeholder: "نام کاربری / ایمیل  ",
+                      name: "email"
                     },
                     domProps: { value: _vm.form.email },
                     on: {
@@ -20572,9 +20599,10 @@ var render = function() {
                   _vm._v(" "),
                   _c("i", { staticClass: "fas fa-user" }),
                   _vm._v(" "),
-                  _c("div", { staticClass: "error" }, [
-                    _vm._v(_vm._s(_vm.errors.email))
-                  ])
+                  _c("div", {
+                    staticClass: "error",
+                    domProps: { innerHTML: _vm._s(_vm.errors.email) }
+                  })
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "form-control1" }, [
@@ -20587,7 +20615,11 @@ var render = function() {
                         expression: "form.password"
                       }
                     ],
-                    attrs: { type: "password", placeholder: "رمز عبور " },
+                    attrs: {
+                      type: "password",
+                      placeholder: "رمز عبور ",
+                      name: "password"
+                    },
                     domProps: { value: _vm.form.password },
                     on: {
                       input: function($event) {
@@ -20601,9 +20633,10 @@ var render = function() {
                   _vm._v(" "),
                   _c("i", { staticClass: "fas fa-lock" }),
                   _vm._v(" "),
-                  _c("div", { staticClass: "error" }, [
-                    _vm._v(_vm._s(_vm.errors.password))
-                  ])
+                  _c("div", {
+                    staticClass: "error",
+                    domProps: { innerHTML: _vm._s(_vm.errors.password) }
+                  })
                 ]),
                 _vm._v(" "),
                 _c(
@@ -20662,8 +20695,256 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "render": () => (/* binding */ render),
 /* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
 /* harmony export */ });
-var render = function () {}
-var staticRenderFns = []
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c("Layout"),
+      _vm._v(" "),
+      _c("div", { staticClass: "d-flex flex-row" }, [
+        _vm._m(0),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-lg-6 col-md-12 col-sm-12" }, [
+          _c("section", { staticClass: "main" }, [
+            _c("div", { staticClass: "login-container" }, [
+              _c("h1", { staticClass: "title" }, [_vm._v("ثبت نام")]),
+              _vm._v(" "),
+              _c("form", { staticClass: "login-form", attrs: { action: "" } }, [
+                _c(
+                  "div",
+                  { staticClass: "form-control1" },
+                  [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.form.name,
+                          expression: "form.name"
+                        }
+                      ],
+                      attrs: {
+                        type: "text",
+                        placeholder: "نام کاربری  ",
+                        name: "name"
+                      },
+                      domProps: { value: _vm.form.name },
+                      on: {
+                        keyup: function($event) {
+                          $event.preventDefault()
+                          return _vm.checkName($event)
+                        },
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(_vm.form, "name", $event.target.value)
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("i", { staticClass: "fas fa-user" }),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "error" }, [
+                      _vm._v(_vm._s(_vm.errors.name))
+                    ]),
+                    _vm._v(" "),
+                    _vm._l(_vm.err_server.name, function(key) {
+                      return _c("div", {
+                        staticClass: "error",
+                        domProps: { innerHTML: _vm._s(key) }
+                      })
+                    })
+                  ],
+                  2
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "form-control1" },
+                  [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.form.email,
+                          expression: "form.email"
+                        }
+                      ],
+                      attrs: { type: "email", placeholder: "ایمیل" },
+                      domProps: { value: _vm.form.email },
+                      on: {
+                        keyup: function($event) {
+                          $event.preventDefault()
+                          return _vm.validEmail($event)
+                        },
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(_vm.form, "email", $event.target.value)
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("i", { staticClass: "fas fa-envelope" }),
+                    _vm._v(" "),
+                    _c("div", {
+                      staticClass: "error",
+                      domProps: { innerHTML: _vm._s(_vm.errors.email) }
+                    }),
+                    _vm._v(" "),
+                    _c("div", {
+                      staticClass: "error",
+                      domProps: { innerHTML: _vm._s(_vm.errors.valid_email) }
+                    }),
+                    _vm._v(" "),
+                    _vm._l(_vm.err_server.email, function(key) {
+                      return _c("div", {
+                        staticClass: "error",
+                        domProps: { innerHTML: _vm._s(key) }
+                      })
+                    })
+                  ],
+                  2
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "form-control1" },
+                  [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.form.password,
+                          expression: "form.password"
+                        }
+                      ],
+                      attrs: { type: "password", placeholder: "رمز عبور " },
+                      domProps: { value: _vm.form.password },
+                      on: {
+                        keyup: function($event) {
+                          $event.preventDefault()
+                          return _vm.checkPassword($event)
+                        },
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(_vm.form, "password", $event.target.value)
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("i", { staticClass: "fas fa-lock" }),
+                    _vm._v(" "),
+                    _c("div", {
+                      staticClass: "error",
+                      domProps: { innerHTML: _vm._s(_vm.errors.password) }
+                    }),
+                    _vm._v(" "),
+                    _vm._l(_vm.err_server.password, function(key) {
+                      return _c("div", {
+                        staticClass: "error",
+                        domProps: { innerHTML: _vm._s(key) }
+                      })
+                    })
+                  ],
+                  2
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "form-control1" }, [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.form.password_confirmation,
+                        expression: "form.password_confirmation"
+                      }
+                    ],
+                    attrs: {
+                      type: "password",
+                      name: "password_confirmation",
+                      placeholder: "تکرار رمز عبور "
+                    },
+                    domProps: { value: _vm.form.password_confirmation },
+                    on: {
+                      keyup: function($event) {
+                        $event.preventDefault()
+                        return _vm.checkConfirmPassword($event)
+                      },
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(
+                          _vm.form,
+                          "password_confirmation",
+                          $event.target.value
+                        )
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("i", { staticClass: "fas fa-lock" }),
+                  _vm._v(" "),
+                  _c("div", {
+                    staticClass: "error",
+                    domProps: {
+                      innerHTML: _vm._s(_vm.errors.password_confirmation)
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("div", {
+                    staticClass: "error",
+                    domProps: {
+                      innerHTML: _vm._s(_vm.errors.check_password_confirmation)
+                    }
+                  })
+                ]),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "submit",
+                    on: {
+                      click: function($event) {
+                        $event.preventDefault()
+                        return _vm.register($event)
+                      }
+                    }
+                  },
+                  [_vm._v("ثبت نام")]
+                )
+              ])
+            ])
+          ])
+        ])
+      ])
+    ],
+    1
+  )
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-lg-6 p-0 d_mobile" }, [
+      _c("section", { staticClass: "side" }, [
+        _c("img", { attrs: { src: "/image/img.svg", alt: "" } })
+      ])
+    ])
+  }
+]
+render._withStripped = true
 
 
 

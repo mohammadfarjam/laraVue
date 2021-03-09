@@ -10,7 +10,6 @@
             <!--        col-lg-6-->
 
             <div class="col-lg-6 col-md-12 col-sm-12">
-                <div v-if="err_server ? :class:'alert alert-danger' : '' "  ></div>
                 <section class="main">
                     <div class="login-container">
                         <h1 class="title">ثبت نام</h1>
@@ -27,6 +26,7 @@
                                 <i class="fas fa-user"></i>
 
                                 <div class="error">{{ errors.name }}</div>
+                                <div class="error" v-for="key in err_server.name" v-html="key"></div>
                             </div>
 
                             <div class="form-control1">
@@ -40,6 +40,7 @@
 
                                 <div class="error" v-html="errors.email"></div>
                                 <div class="error" v-html="errors.valid_email"></div>
+                                <div class="error" v-for="key in err_server.email" v-html="key"></div>
                             </div>
 
                             <div class="form-control1">
@@ -51,7 +52,10 @@
                                 />
                                 <i class="fas fa-lock"></i>
                                 <div class="error" v-html="errors.password"></div>
-                                <div class="error" v-html="errors.password_length "></div>
+<!--                                <div class="error" v-html="errors.password_length "></div>-->
+                                <div class="error" v-for="key in err_server.password" v-html="key"></div>
+
+
                             </div>
 
                             <div class="form-control1">
@@ -66,6 +70,8 @@
 
                                 <div class="error" v-html="errors.password_confirmation"></div>
                                 <div class="error" v-html="errors.check_password_confirmation"></div>
+
+
                             </div>
                             <button class="submit" @click.prevent="register">ثبت نام</button>
                         </form>
@@ -116,23 +122,23 @@ export default {
                 Vue.set(this.errors, "password", "رمز عبور خود را وارد نمایید");
             }
 
-            if (this.form.password && this.form.password.length < 8) {
-                Vue.set(this.errors, "password_length", "رمز عبور باید بیش از 8 کاراکتر باشد");
-            }
+            // if (this.form.password && this.form.password.length < 8) {
+            //     Vue.set(this.errors, "password_length", "رمز عبور باید بیش از 8 کاراکتر باشد");
+            // }
             if (!this.form.password_confirmation) {
                 Vue.set(this.errors, "password_confirmation", "تکرار رمز عبور را وارد نمایید ");
-            } else {
-                Vue.set(this.errors, "password_confirmation", "");
             }
-            if (!this.errors) {
 
-            } else {
+
+            //for send data to controller and validate
+            if (!this.errors.name && !this.errors.email && !this.errors.password && !this.errors.password_confirmation) {
                 axios.post('/api/register', this.form).then((response) => {
-
                 }).catch((error) => {
-                   this.err_server=error.response.data.errors;
+                    this.err_server=error.response.data.errors;
 
                 })
+            } else {
+
             }
 
 
@@ -143,7 +149,7 @@ export default {
             if (!this.form.name) {
 
             } else {
-                Vue.set(this.errors, "name", "");
+                Vue.set(this.errors, "name", '');
             }
         },
 
@@ -172,6 +178,8 @@ export default {
                 Vue.set(this.errors, "check_password_confirmation", "تکرار رمز عبور تطابق ندارد ");
             } else {
                 Vue.set(this.errors, "check_password_confirmation", "");
+                    Vue.set(this.errors, "password_confirmation", "");
+
             }
 
             if (!this.form.password_confirmation) {

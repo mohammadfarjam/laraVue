@@ -18,18 +18,18 @@
 
                         <form action="" class="login-form">
                             <div class="form-control1">
-                                <input type="text" placeholder="نام کاربری / ایمیل  " v-model="form.email"/>
+                                <input type="text" placeholder="نام کاربری / ایمیل  " v-model="form.email" name="email" />
                                 <i class="fas fa-user"></i>
 
-                                <div class="error">{{ errors.email }}</div>
+                                <div class="error" v-html="errors.email"></div>
                             </div>
 
 
                             <div class="form-control1">
-                                <input type="password" placeholder="رمز عبور " v-model="form.password"/>
+                                <input type="password" placeholder="رمز عبور " v-model="form.password" name="password" />
                                 <i class="fas fa-lock"></i>
 
-                                <div class="error">{{ errors.password }}</div>
+                                <div class="error" v-html="errors.password"></div>
                             </div>
                             <button class="submit" @click.prevent="login">
                                 ورود
@@ -47,7 +47,8 @@
     </div>
 </template>
 <script>
-
+import Vue from 'vue';
+import axios from "axios";
 import Layout from "./Layout";
 
 export default {
@@ -56,13 +57,12 @@ export default {
     data (){
         return{
             form:{
-                name: "",
                 email: "",
                 password: "",
 
             },
             errors: {},
-            err: [],
+            err_server: {},
         }
     },
 
@@ -72,7 +72,20 @@ export default {
             this.errors = {};
 
             if (!this.form.email) {
-                this.Vue.set(this.errors, "name", "نام کاربری  یا ایمیل خود را وارد نمایید");
+                Vue.set(this.errors, "email", " نام کاربری / ایمیل خود را وارد نمایید");
+            }
+            if (!this.form.password) {
+                Vue.set(this.errors, "password", "رمز عبور خود را وارد نمایید");
+            }
+
+
+            if (!this.errors.email && !this.errors.password) {
+                axios.post('/api/login', this.form).then((response) => {
+                   this.$router.push({ name:"dashboard"});
+                }).catch((error) => {
+                    this.err_server=error.response.data.errors;
+
+                })
             }
 }
 }

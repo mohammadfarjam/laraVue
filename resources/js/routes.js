@@ -21,7 +21,7 @@ export default {
             path: '/login', component: Login
         },
         {
-            path: '/dashboard', component: Dashboard
+            path: '/dashboard', component: Dashboard,name:'dashboard'
         }
     ]
 
