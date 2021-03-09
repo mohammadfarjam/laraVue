@@ -1,19 +1,19 @@
 <template>
     <div>
-        <Layout/>
+        <Layout />
         <div class="d-flex flex-row">
             <div class="col-lg-6 p-0 d_mobile">
                 <section class="side">
-                    <img src="/image/img.svg"/>
+                    <img src="/image/img.svg" alt=""/>
                 </section>
             </div>
             <!--        col-lg-6-->
 
             <div class="col-lg-6 col-md-12 col-sm-12">
+                <div v-if="err_server ? :class:'alert alert-danger' : '' "  ></div>
                 <section class="main">
                     <div class="login-container">
                         <h1 class="title">ثبت نام</h1>
-
                         <form action="" class="login-form">
                             <div class="form-control1">
                                 <input
@@ -64,10 +64,10 @@
                                 />
                                 <i class="fas fa-lock"></i>
 
-                               <div class="error" v-html="errors.password_confirmation"></div>
-                               <div class="error" v-html="errors.check_password_confirmation"></div>
+                                <div class="error" v-html="errors.password_confirmation"></div>
+                                <div class="error" v-html="errors.check_password_confirmation"></div>
                             </div>
-                            <button class="submit" @click.prevent="register" >ثبت نام</button>
+                            <button class="submit" @click.prevent="register">ثبت نام</button>
                         </form>
                     </div>
                 </section>
@@ -78,29 +78,26 @@
 </template>
 
 <script>
-import Layout from "./Layout";
-import Vue from 'vue/dist/vue';
+import Vue from 'vue';
 import axios from "axios";
+import Layout from "./Layout";
 
 
 export default {
-
     components: {Layout},
-
-    data (){
-        return{
-            form:{
+    name: "app",
+    data() {
+        return {
+            form: {
                 name: "",
                 email: "",
                 password: "",
                 password_confirmation: "",
             },
             errors: {},
-            err: {},
+            err_server: {},
         }
     },
-
-
 
 
     methods: {
@@ -108,7 +105,7 @@ export default {
             this.errors = {};
 
             if (!this.form.name) {
-              Vue.set(this.errors, "name", "نام کاربری خود را وارد نمایید");
+                Vue.set(this.errors, "name", "نام کاربری خود را وارد نمایید");
             }
 
             if (!this.form.email) {
@@ -116,24 +113,25 @@ export default {
             }
 
             if (!this.form.password) {
-               Vue.set(this.errors, "password", "رمز عبور خود را وارد نمایید");
+                Vue.set(this.errors, "password", "رمز عبور خود را وارد نمایید");
             }
 
             if (this.form.password && this.form.password.length < 8) {
-               Vue.set(this.errors, "password_length", "رمز عبور باید بیش از 8 کاراکتر باشد");
+                Vue.set(this.errors, "password_length", "رمز عبور باید بیش از 8 کاراکتر باشد");
             }
             if (!this.form.password_confirmation) {
-             Vue.set(this.errors, "password_confirmation", "تکرار رمز عبور را وارد نمایید ");
-            }else{
-               Vue.set(this.errors, "password_confirmation", "");
+                Vue.set(this.errors, "password_confirmation", "تکرار رمز عبور را وارد نمایید ");
+            } else {
+                Vue.set(this.errors, "password_confirmation", "");
             }
-            if(!this.errors) {
+            if (!this.errors) {
 
-            }else{
-             Vue.axios.post('/api/register',this.form).then((response) =>{
-                 // console.log(response);
+            } else {
+                axios.post('/api/register', this.form).then((response) => {
+
                 }).catch((error) => {
-                    // console.log(error);
+                   this.err_server=error.response.data.errors;
+
                 })
             }
 
@@ -141,45 +139,44 @@ export default {
         },
 
 
-
-        checkName(){
+        checkName() {
             if (!this.form.name) {
 
-        }else{
+            } else {
                 Vue.set(this.errors, "name", "");
             }
-            },
+        },
 
         validEmail() {
             if (this.form.email) {
                 if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.form.email)) {
                     Vue.set(this.errors, "valid_email", "");
-            } else {
-                  Vue.set(this.errors, "email", "");
+                } else {
+                    Vue.set(this.errors, "email", "");
                     Vue.set(this.errors, "valid_email", "آدرس ایمیل معتبر نمی باشد");
                 }
             } else {
-                 Vue.set(this.errors, "email", "");
+                Vue.set(this.errors, "email", "");
                 Vue.set(this.errors, "valid_email", "");
-               }
+            }
         },
 
-        checkPassword(){
-            if (this.form.password.length > 0){
+        checkPassword() {
+            if (this.form.password.length > 0) {
                 Vue.set(this.errors, "password", "");
             }
         },
 
-        checkConfirmPassword(){
+        checkConfirmPassword() {
             if (this.form.password_confirmation !== this.form.password) {
                 Vue.set(this.errors, "check_password_confirmation", "تکرار رمز عبور تطابق ندارد ");
-            }else{
+            } else {
                 Vue.set(this.errors, "check_password_confirmation", "");
             }
 
-            if (!this.form.password_confirmation){
+            if (!this.form.password_confirmation) {
                 Vue.set(this.errors, "password_confirmation", "");
-                }
+            }
         },
 
     },

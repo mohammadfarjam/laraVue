@@ -29,10 +29,5 @@
         "moment": "^2.29.1",
         "vue-axios": "^3.2.4",
         "vue-router": "^3.4.9"
-    },
-    "eslintConfig": {
-        "rules": {
-            "no-console": 0
-        }
     }
 }
