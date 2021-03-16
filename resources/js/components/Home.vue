@@ -1,13 +1,21 @@
 <template>
     <div>
-        <Layout/>
+        <Layout />
         <h1>Home page</h1>
+
+        {{userData.name}}
     </div>
 </template>
 
 <script>
 import Layout from "./Layout";
+
 export default {
-    components: {Layout}
+    name:'home',
+    components: {Layout},
+    props: {
+        userData : Object,
+    },
+
 }
 </script>

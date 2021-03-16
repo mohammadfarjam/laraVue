@@ -5,8 +5,5 @@
     <router-view />
 
 @endsection
-<script>
-    export default {
-    }
-</script>
+
 

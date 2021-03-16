@@ -9,7 +9,7 @@ export default {
 
     routes: [
         {
-            path: '/', component: Home
+            path: '/', component: Home,name:'home',props: true
         },
         {
             path: '/about', component: About

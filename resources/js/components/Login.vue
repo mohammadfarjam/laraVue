@@ -22,6 +22,7 @@
                                 <i class="fas fa-user"></i>
 
                                 <div class="error" v-html="errors.email"></div>
+                                <div class="error" v-for="key in err_server.email" v-html="key"></div>
                             </div>
 
 
@@ -30,6 +31,7 @@
                                 <i class="fas fa-lock"></i>
 
                                 <div class="error" v-html="errors.password"></div>
+                                <div class="error" v-for="key in err_server.password" v-html="key"></div>
                             </div>
                             <button class="submit" @click.prevent="login">
                                 ورود
@@ -59,10 +61,10 @@ export default {
             form:{
                 email: "",
                 password: "",
-
             },
             errors: {},
             err_server: {},
+            userData:[],
         }
     },
 
@@ -81,7 +83,9 @@ export default {
 
             if (!this.errors.email && !this.errors.password) {
                 axios.post('/api/login', this.form).then((response) => {
-                   this.$router.push({ name:"dashboard"});
+                    if(response.status === 200){
+                        this.$router.push({ name:"home",params:{userData:response.data } });
+                    }
                 }).catch((error) => {
                     this.err_server=error.response.data.errors;
 
